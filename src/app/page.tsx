@@ -1,72 +1,211 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+export default function LandingPage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="suri-shell">
+      {/* Decorative Background Blur */}
+      <div className="bg-blur bg-blur-blue"></div>
+      <div className="bg-blur bg-blur-green"></div>
+
+      {/* App Window */}
+      <div className="browser-frame">
+        {/* Browser Top Bar */}
+        <div className="browser-toolbar">
+          <div className="browser-left">
+            <span className="browser-dot red"></span>
+            <span className="browser-dot yellow"></span>
+            <span className="browser-dot green"></span>
+          </div>
+
+          <div className="browser-center">
+            <span className="browser-url">www.suri.com</span>
+          </div>
+
+          <div className="browser-right">
+            <span className="toolbar-icon">⤴</span>
+            <span className="toolbar-icon">＋</span>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+
+        {/* Navbar */}
+        <nav className="suri-nav">
+          <div className="logo-wrap">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+              src="/SURI.png"
+              alt="SURI Logo"
+              width={70}
+              height={70}
+              priority
             />
-            Deploy Now
-          </a>
-          <Link
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="/dashboard"
-          >
-            Open Dashboard
-          </Link>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+          </div>
+
+          <div className="nav-links">
+            <a href="#">Features</a>
+            <a href="#">How It Works</a>
+            <a href="#">Scope</a>
+          </div>
+
+          <div className="nav-actions">
+            <Link className="btn-outline" href="/login">
+              Log In
+            </Link>
+            <Link className="btn-primary" href="/signup">
+              Get Started
+            </Link>
+          </div>
+        </nav>
+
+        {/* Hero */}
+        <section className="hero-section">
+          <div className="hero-left">
+            <h1>
+              Master Algebra with
+              <br />
+              Personalized Guidance
+            </h1>
+
+            <p>
+              SURI is an intelligent, web-based platform that maps your unique
+              learning gaps and builds a custom remediation path aligned with
+              DepEd MELCs and Self-Learning Modules.
+            </p>
+
+            <div className="hero-buttons">
+              <Link className="btn-primary large" href="/dashboard">
+                Start Learning Now
+              </Link>
+
+              <Link className="btn-secondary large" href="/lessons">
+                Learn More
+              </Link>
+            </div>
+          </div>
+
+          {/* Dashboard Preview */}
+          <div className="hero-right">
+            <div className="dashboard-card">
+              <div className="dashboard-top">
+                <div className="dashboard-title">
+                  <div className="mini-logo"></div>
+                  <span>Student Dashboard</span>
+                </div>
+
+                <div className="dashboard-user"></div>
+              </div>
+
+              <div className="dashboard-body">
+                <div className="node node-blue">
+                  Quadratic
+                  <br />
+                  Equations
+                </div>
+
+                <div className="curve curve-blue"></div>
+
+                <div className="node node-yellow">
+                  Rational Exponents
+                  <span>(Gap Identified)</span>
+                </div>
+
+                <div className="curve curve-yellow"></div>
+
+                <div className="node node-green">Rational Equations</div>
+
+                <div className="curve curve-pink"></div>
+
+                <div className="node node-red">Radicals</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Pipeline */}
+        <section className="pipeline-section">
+          <h2>SURI Learning Pipeline</h2>
+
+          <div className="pipeline-grid">
+            <div className="pipeline-card">
+              <div className="badge blue">🎓</div>
+              <h3>GO1</h3>
+              <p>
+                Learn more modules and training skills configurations.
+              </p>
+            </div>
+
+            <div className="pipeline-card">
+              <div className="badge pink">📕</div>
+              <h3>GO2</h3>
+              <p>
+                Learn more educational concepts and experiences.
+              </p>
+            </div>
+
+            <div className="pipeline-card">
+              <div className="badge green">🟩</div>
+              <h3>GO3</h3>
+              <p>
+                Learn more with math causes and personalized learning gaps.
+              </p>
+            </div>
+
+            <div className="pipeline-card">
+              <div className="badge orange">🟨</div>
+              <h3>GO5</h3>
+              <p>
+                Learn more modern remediation systems and assisted math models.
+              </p>
+            </div>
+
+            {/* Scope Box */}
+            <div className="scope-box">
+              <div className="scope-column">
+                <h4>System Scope & Focus</h4>
+
+                <div className="scope-item">
+                  <strong>Target Audience & Topics</strong>
+                  <p>Interaction Format</p>
+                </div>
+
+                
+              </div>
+
+              <div className="scope-column">
+                <div className="scope-item">
+                  <strong>Curriculum Alignment</strong>
+                  <p>Verified and Focused</p>
+                </div>
+
+                <div className="scope-item">
+                  <strong>Focus Models</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="cta-section">
+          <div className="cta-banner">
+            <div>
+              <h2>Ready to close your math gaps?</h2>
+              <p>
+                SURI is an intelligent, web math platform that treats your
+                unique gaps.
+              </p>
+            </div>
+
+            <Link className="btn-white" href="/dashboard">
+              Launch Dashboard
+            </Link>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="footer">
+          Copyright 20221. All rights reserved.
+        </footer>
+      </div>
+    </main>
   );
 }
