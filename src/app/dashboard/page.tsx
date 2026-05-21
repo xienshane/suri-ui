@@ -88,7 +88,7 @@ const LESSONS = [
 
 // ── Nav config ────────────────────────────────────────────────────
 
-type View = "home" | "learn" | "practice" | "exams" | "library";
+type View = "home" | "learn" | "practice" | "exams" | "library" | "settings";
 
 const NAV: { id: View; icon: React.ElementType; label: string }[] = [
   { id: "home",     icon: LayoutGrid,    label: "Home" },
@@ -403,15 +403,14 @@ export default function DashboardPage() {
           ))}
         </nav>
         <div className="dashboard__sidebar-actions">
-          <button className="dashboard__icon-button" title="Settings" type="button">
+          <button
+            className={`dashboard__icon-button ${view === "settings" ? "is-active" : ""}`}
+            title="Settings"
+            type="button"
+            onClick={() => setView("settings")}
+          >
             <Settings className="icon" aria-hidden="true" />
           </button>
-          <div className="dashboard__profile" title="Account">
-            <img
-              alt="Account avatar"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJ9ce7PthfqH_ELoYbnoa-g6SrAbygVLmZCcnAQH8ACCSrOlvn_2_ghbS9W1Qqq6dfH-BX2uLOQ55wsgzRQSoUaPozMnnP79T3OAyNK1rLfPuiobGJTRPwCO7rd1EFTVo3japqZeY6MrfPTn5ED9vVAaJDVyCCyIMehIJPtRA_RI0Jr31Q27nVWLpXZ0Pthd5EgJ-_8f28YVOBRMVzl4Pba3EI4BtF95ilDk_WOaMzkIIT4M7-AUxb5Qwe-Zz5ghmLtEVAHvNGYNI"
-            />
-          </div>
         </div>
       </aside>
 
@@ -422,8 +421,47 @@ export default function DashboardPage() {
           {view === "practice" && <ComingSoon label="Practice" />}
           {view === "exams"    && <ComingSoon label="Assessments" />}
           {view === "library"  && <ComingSoon label="Library" />}
+          {view === "settings" && <SettingsView />}
         </div>
       </main>
+    </div>
+  );
+}
+
+function SettingsView() {
+  return (
+    <div className="settings-view">
+      <header className="settings-view__header">
+        <p className="settings-view__eyebrow">Settings</p>
+        <h2>Account Settings</h2>
+        <p>Manage your profile, security, and learning preferences.</p>
+      </header>
+
+      <div className="settings-view__grid">
+        <section className="settings-view__card">
+          <div>
+            <h3>Profile</h3>
+            <p>Update your name, email, and student details.</p>
+          </div>
+          <button type="button">Edit Profile</button>
+        </section>
+
+        <section className="settings-view__card">
+          <div>
+            <h3>Security</h3>
+            <p>Change your password and manage devices.</p>
+          </div>
+          <button type="button">Update Password</button>
+        </section>
+
+        <section className="settings-view__card">
+          <div>
+            <h3>Notifications</h3>
+            <p>Control reminders, weekly summaries, and tips.</p>
+          </div>
+          <button type="button">Manage Alerts</button>
+        </section>
+      </div>
     </div>
   );
 }

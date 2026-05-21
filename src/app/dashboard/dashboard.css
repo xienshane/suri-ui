@@ -164,23 +164,12 @@ body {
   color: var(--secondary);
 }
 
-.dashboard__profile {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: transparent;
-  border: none;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
+.dashboard__icon-button.is-active {
+  background: var(--secondary);
+  color: var(--secondary-strong);
 }
 
-.dashboard__profile img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-}
+/* Avatar container removed from sidebar */
 
 .dashboard__icon-button--outline {
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -662,6 +651,82 @@ body {
   color: var(--text-muted);
   font-size: 12px;
   border-top: 1px solid rgba(195, 197, 217, 0.3);
+}
+
+.settings-view {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.settings-view__header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.settings-view__header h2 {
+  margin: 0;
+  font-family: "Hanken Grotesk", sans-serif;
+  font-size: 24px;
+}
+
+.settings-view__header p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.settings-view__eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--outline);
+}
+
+.settings-view__grid {
+  display: grid;
+  gap: 16px;
+}
+
+.settings-view__card {
+  background: var(--surface-strong);
+  border-radius: 18px;
+  border: 1px solid rgba(195, 197, 217, 0.35);
+  padding: 20px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.settings-view__card h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.settings-view__card p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.settings-view__card button {
+  border: none;
+  background: var(--surface-high);
+  color: var(--text);
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.settings-view__card button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 
