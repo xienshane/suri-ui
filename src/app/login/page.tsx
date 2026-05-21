@@ -89,7 +89,7 @@ export default function LoginPage() {
 
                   <Link className="primary-btn" href="/dashboard">
                     <span>Login</span>
-                    <span className="material-symbols-outlined">arrow_forward</span>
+                    <span className="material-symbols-outlined"></span>
                   </Link>
                 </form>
 
@@ -161,7 +161,7 @@ export default function LoginPage() {
                   <button className="tertiary-btn" type="submit">
                     <span>Create Account</span>
                     <span className="material-symbols-outlined">
-                      rocket_launch
+                      
                     </span>
                   </button>
                 </form>
@@ -184,7 +184,7 @@ export default function LoginPage() {
       </div>
 
       <footer className="login-footer">
-        <p>© 2024 SURI Adaptive Learning Platform. All rights reserved.</p>
+        <p>© 2026 SURI Adaptive Learning Platform. All rights reserved.</p>
       </footer>
     </div>
   );

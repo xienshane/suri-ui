@@ -1,80 +1,77 @@
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap");
 
+/*
+  Tokens aligned with landing page globals.css:
+  --navy        #001a54   (was --login-primary: #004ac6)
+  --navy-mid    #002480   (was --login-primary-container: #2563eb)
+  --gold        #fdd400   (was --login-secondary-container: #ffc329)
+  --node-green  #16a34a   (was --login-tertiary / tertiary-container)
+  Fonts: Hanken Grotesk (display) + Manrope (body) via layout.tsx
+*/
+
 :root {
-  --login-primary: #004ac6;
-  --login-primary-container: #2563eb;
-  --login-secondary-container: #ffc329;
-  --login-tertiary: #006229;
-  --login-tertiary-container: #007e37;
-  --login-surface: #f8f9ff;
-  --login-surface-variant: #d3e4fe;
-  --login-surface-container: #e5eeff;
+  --login-primary:                #001a54;
+  --login-primary-hover:          #002480;
+  --login-primary-shadow:         rgba(0, 26, 84, 0.28);
+  --login-secondary-container:    #fdd400;
+  --login-tertiary:               #15803d;
+  --login-tertiary-container:     #16a34a;
+  --login-tertiary-shadow:        rgba(21, 128, 61, 0.25);
+  --login-surface:                #e8eaf0;   /* matches shell bg */
   --login-surface-container-lowest: #ffffff;
-  --login-surface-container-low: #eff4ff;
-  --login-outline: #737686;
-  --login-outline-variant: #c3c6d7;
-  --login-on-surface: #0b1c30;
-  --login-on-surface-variant: #434655;
-  --login-on-primary: #ffffff;
-  --login-shadow: 0 25px 50px rgba(15, 23, 42, 0.16);
-  --login-glass: rgba(255, 255, 255, 0.82);
-  --login-radius-xl: 24px;
-  --login-radius-lg: 16px;
-  --login-radius-md: 12px;
-  --login-font-display: "Plus Jakarta Sans", sans-serif;
-  --login-font-body: "Inter", sans-serif;
+  --login-outline-variant:        #c3c5d9;   /* --gray-200 */
+  --login-on-surface:             #111827;   /* --gray-900 */
+  --login-on-surface-variant:     #4f5368;   /* --gray-600 */
+  --login-on-primary:             #ffffff;
+  --login-shadow:                 0 25px 50px rgba(0, 26, 84, 0.14);
+  --login-glass:                  rgba(255, 255, 255, 0.88);
+  --login-radius-xl:              24px;
+  --login-radius-lg:              14px;
+  --login-radius-md:              10px;
+
+  /* Typography — fall back to system if CSS vars from layout not yet applied */
+  --login-font-display: var(--font-hanken, Georgia, serif);
+  --login-font-body:    var(--font-manrope, system-ui, sans-serif);
 }
 
-html,
-body,
-#__next {
+/* ─── Reset / base ────────────────────────────────────────────── */
+
+html, body, #__next {
   height: 100%;
 }
 
 body {
   margin: 0;
-  overflow: hidden;
+  /* NO overflow:hidden — allow scroll on short viewports */
   background: var(--login-surface);
+  font-family: var(--login-font-body);
+  -webkit-font-smoothing: antialiased;
 }
+
+/* ─── Page shell ──────────────────────────────────────────────── */
 
 .login-page {
-  height: 100vh;
-  display: grid;
-  grid-template-rows: 1fr auto;
-  font-family: var(--login-font-body);
+  min-height: 100vh;          /* min, not fixed 100vh */
+  display: flex;
+  flex-direction: column;
   color: var(--login-on-surface);
-  overflow: hidden;
+  /* Match landing page bg-mesh */
   background:
-    radial-gradient(
-      circle at 0% 0%,
-      rgba(37, 99, 235, 0.08),
-      transparent 48%
-    ),
-    radial-gradient(
-      circle at 100% 0%,
-      rgba(0, 126, 55, 0.06),
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 100% 100%,
-      rgba(37, 99, 235, 0.08),
-      transparent 48%
-    ),
-    radial-gradient(
-      circle at 0% 100%,
-      rgba(255, 195, 41, 0.07),
-      transparent 50%
-    ),
-    var(--login-surface);
+    radial-gradient(ellipse 600px 400px at 15% 20%,  rgba(0, 26, 84, 0.08)    0%, transparent 70%),
+    radial-gradient(ellipse 500px 500px at 85% 75%,  rgba(253, 212, 0, 0.12)  0%, transparent 70%),
+    radial-gradient(ellipse 400px 300px at 60% 10%,  rgba(37, 99, 235, 0.06)  0%, transparent 70%),
+    #e8eaf0;
   position: relative;
-  overflow: hidden;
 }
 
+/* ─── Main / centering ────────────────────────────────────────── */
+
 .login-main {
-  display: grid;
-  place-items: center;
-  padding: 8px 20px 16px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px 24px;   /* top padding so logo never clips */
 }
 
 .login-shell {
@@ -85,52 +82,70 @@ body {
   align-items: center;
   position: relative;
   z-index: 1;
-  transform: translateY(-20px);
+  /* removed translateY(-20px) — caused clipping on short screens */
 }
+
+/* ─── Brand block ─────────────────────────────────────────────── */
 
 .brand-block {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 4px;
 }
+
+/* ─── Auth card ───────────────────────────────────────────────── */
 
 .auth-card {
   width: 100%;
-  padding: 24px;
+  padding: 28px;
   border-radius: 28px;
   background: var(--login-glass);
-  border: 1px solid rgba(226, 232, 240, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.9);
   box-shadow: var(--login-shadow);
-  backdrop-filter: blur(14px);
-  transition: transform 0.2s ease;
+  backdrop-filter: blur(16px);
+  transition: transform 0.15s ease;
 }
 
 .auth-card.is-animating {
-  transform: scale(0.98);
+  transform: scale(0.985);
 }
 
 .auth-view {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
 }
+
+/* ─── Auth header ─────────────────────────────────────────────── */
 
 .auth-header h2 {
   font-family: var(--login-font-display);
   font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 6px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--login-on-surface);
+  margin-bottom: 4px;
 }
 
 .auth-header p {
   color: var(--login-on-surface-variant);
   font-size: 14px;
+  line-height: 1.5;
 }
+
+/* ─── Form ────────────────────────────────────────────────────── */
 
 .auth-form {
   display: flex;
   flex-direction: column;
   gap: 14px;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
 .field {
@@ -140,8 +155,9 @@ body {
 }
 
 .field label {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
+  color: var(--login-on-surface);
 }
 
 .field-row {
@@ -156,52 +172,39 @@ body {
   align-items: center;
 }
 
-.input-wrap .material-symbols-outlined,
-
-.input-wrap input {
-  width: 100%;
-  padding: 12px 16px;
-  border-radius: var(--login-radius-lg);
-  border: 1px solid var(--login-outline-variant);
-  background: var(--login-surface-container-lowest);
-  font-size: 16px;
-  font-family: var(--login-font-body);
-  transition: border 0.2s ease, box-shadow 0.2s ease;
-}
-
-.input-wrap input:focus {
-  border-color: transparent;
-  box-shadow: 0 0 0 2px rgba(0, 74, 198, 0.4);
-  outline: none;
-}
-
-
+.input-wrap input,
 .field input,
 .field select {
   width: 100%;
-  padding: 12px 16px;
+  padding: 11px 16px;
   border-radius: var(--login-radius-lg);
-  border: 1px solid var(--login-outline-variant);
+  border: 1.5px solid var(--login-outline-variant);
   background: var(--login-surface-container-lowest);
-  font-size: 16px;
+  font-size: 15px;
   font-family: var(--login-font-body);
-  transition: border 0.2s ease, box-shadow 0.2s ease;
+  color: var(--login-on-surface);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  -webkit-appearance: none;
 }
 
+.input-wrap input:focus,
 .field input:focus,
 .field select:focus {
-  border-color: transparent;
-  box-shadow: 0 0 0 2px rgba(0, 74, 198, 0.35);
+  border-color: var(--login-primary);
+  box-shadow: 0 0 0 3px rgba(0, 26, 84, 0.12);
   outline: none;
 }
 
 .field select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 7L10 12L15 7' stroke='%23434655' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 7L10 12L15 7' stroke='%234f5368' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 16px center;
-  padding-right: 44px;
+  background-position: right 14px center;
+  padding-right: 40px;
+  cursor: pointer;
 }
+
+/* ─── Links ───────────────────────────────────────────────────── */
 
 .link {
   font-size: 12px;
@@ -209,165 +212,159 @@ body {
   color: var(--login-primary);
   text-decoration: none;
 }
+.link:hover { text-decoration: underline; }
 
-.link:hover {
-  text-decoration: underline;
-}
+/* ─── Buttons ─────────────────────────────────────────────────── */
 
 .primary-btn,
 .tertiary-btn {
   width: 100%;
-  padding: 14px 18px;
-  border-radius: var(--login-radius-lg);
+  padding: 13px 18px;
+  border-radius: 999px;        /* pill — matches landing page */
   border: none;
-  font-weight: 600;
+  font-family: var(--login-font-body);
+  font-weight: 700;
   font-size: 14px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease,
-    background 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  text-decoration: none;
+  line-height: 1;
 }
 
 .primary-btn {
   background: var(--login-primary);
   color: var(--login-on-primary);
-  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 6px 18px var(--login-primary-shadow);
 }
-
 .primary-btn:hover {
-  background: var(--login-primary-container);
+  background: var(--login-primary-hover);
   transform: translateY(-1px);
+  box-shadow: 0 10px 24px var(--login-primary-shadow);
 }
-
 .primary-btn .material-symbols-outlined {
   transition: transform 0.2s ease;
 }
-
 .primary-btn:hover .material-symbols-outlined {
-  transform: translateX(4px);
+  transform: translateX(3px);
 }
 
 .tertiary-btn {
   background: var(--login-tertiary-container);
   color: var(--login-on-primary);
-  box-shadow: 0 10px 25px rgba(0, 126, 55, 0.25);
+  box-shadow: 0 6px 18px var(--login-tertiary-shadow);
 }
-
 .tertiary-btn:hover {
   background: var(--login-tertiary);
   transform: translateY(-1px);
+  box-shadow: 0 10px 24px var(--login-tertiary-shadow);
 }
 
+/* ─── Switch / checkbox ───────────────────────────────────────── */
 
 .switch-text {
   text-align: center;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--login-on-surface-variant);
 }
-
 .switch-text button {
-  margin-left: 6px;
+  margin-left: 5px;
   background: none;
   border: none;
   color: var(--login-primary);
-  font-weight: 600;
+  font-weight: 700;
+  font-family: var(--login-font-body);
   cursor: pointer;
+  font-size: 13px;
 }
-
-.switch-text button:hover {
-  text-decoration: underline;
-}
+.switch-text button:hover { text-decoration: underline; }
 
 .checkbox-row {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 10px;
   font-size: 12px;
   color: var(--login-on-surface-variant);
-  line-height: 1.4;
+  line-height: 1.5;
+  cursor: pointer;
 }
-
-.checkbox-row input {
-  width: 18px;
-  height: 18px;
+.checkbox-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
   margin-top: 2px;
   accent-color: var(--login-primary);
+  flex-shrink: 0;
 }
-
 .checkbox-row a {
   color: var(--login-primary);
   text-decoration: none;
 }
+.checkbox-row a:hover { text-decoration: underline; }
 
-.checkbox-row a:hover {
-  text-decoration: underline;
-}
+/* ─── Background blobs ────────────────────────────────────────── */
 
 .login-blobs {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.35;
+  opacity: 0.3;
 }
-
 .blob {
   position: absolute;
   width: 42vw;
   height: 42vw;
   border-radius: 999px;
-  filter: blur(120px);
+  filter: blur(130px);
 }
-
 .blob-primary {
   top: -10%;
   left: -12%;
-  background: var(--login-primary-container);
+  background: #b7c4ff;        /* --navy-light from landing */
 }
-
 .blob-secondary {
   bottom: -10%;
   right: -12%;
   background: var(--login-secondary-container);
 }
 
+/* ─── Footer ──────────────────────────────────────────────────── */
+
 .login-footer {
-  padding: 0 16px;
-  text-align: center;
-  color: var(--login-outline);
-  font-size: 11px;
+  position: relative;
   z-index: 1;
-  padding-bottom: 12px;
+  padding: 12px 16px 20px;
+  text-align: center;
+  color: #8a8ea8;             /* --gray-400 from landing */
+  font-size: 11px;
 }
+
+/* ─── Material icons ──────────────────────────────────────────── */
 
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
   display: inline-block;
   vertical-align: middle;
+  font-size: 18px;
 }
-
 .material-symbols-outlined.icon-filled {
   font-variation-settings: "FILL" 1, "wght" 500, "GRAD" 0, "opsz" 24;
 }
 
+/* ─── Responsive ──────────────────────────────────────────────── */
+
 @media (max-width: 600px) {
   .login-main {
-    padding: 12px 16px;
+    padding: 24px 16px 20px;
+    align-items: flex-start;  /* let content start from top on small screens */
   }
-
   .auth-card {
-    padding: 20px 16px;
-    border-radius: 24px;
+    padding: 22px 18px;
+    border-radius: 22px;
   }
-
-  .auth-header h2 {
-    font-size: 20px;
-  }
-
-  .auth-header p {
-    font-size: 13px;
-  }
+  .auth-header h2 { font-size: 20px; }
+  .field-grid { grid-template-columns: 1fr; }
 }
