@@ -35,7 +35,7 @@
 
   /* Typography */
   --font-display:   var(--font-hanken, Georgia, serif);
-  --font-body:      var(--font-manrope, system-ui, sans-serif);
+  --font-body:      var(--font-lexend, system-ui, sans-serif);
   --font-mono:      var(--font-geist-mono, monospace);
 
   /* Spacing */

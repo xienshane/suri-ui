@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Hanken_Grotesk, Manrope } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Hanken_Grotesk,
+  Lexend,
+  Manrope,
+} from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -24,6 +30,12 @@ const manrope = Manrope({
   weight: ["400", "500", "700"],
 });
 
+const lexend = Lexend({
+  variable: "--font-lexend",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+});
+
 export const metadata = {
   title: "My Landing Page",
   description: "Welcome to my website",
@@ -37,7 +49,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${hankenGrotesk.variable} ${manrope.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${hankenGrotesk.variable} ${manrope.variable} ${lexend.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
