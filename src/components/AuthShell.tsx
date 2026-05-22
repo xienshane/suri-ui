@@ -1,98 +1,449 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
 type AuthShellProps = {
-  title: string;
-  description: string;
-  submitLabel: string;
-  submitHref?: string;
-  footerText: string;
-  footerLinkLabel: string;
-  footerLinkHref: string;
-  children: React.ReactNode;
+  initialView?: "login" | "signup";
 };
 
-export default function AuthShell({
-  title,
-  description,
-  submitLabel,
-  submitHref,
-  footerText,
-  footerLinkLabel,
-  footerLinkHref,
-  children,
-}: AuthShellProps) {
+export default function AuthShell({ initialView = "login" }: AuthShellProps) {
+  const [view, setView] = useState<"login" | "signup">(initialView);
+  const [phase, setPhase] = useState<"idle" | "leave" | "enter">("idle");
   const router = useRouter();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (submitHref) {
-      router.push(submitHref);
-    }
+  const toggleView = useCallback(() => {
+    if (phase !== "idle") return;
+    setPhase("leave");
+    setTimeout(() => {
+      setView((v) => (v === "login" ? "signup" : "login"));
+      setPhase("enter");
+      setTimeout(() => setPhase("idle"), 250);
+    }, 180);
+  }, [phase, view]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    router.push("/dashboard");
   };
 
   return (
-    <div className="relative h-screen overflow-hidden bg-[#e8eaf0] text-[#111827]">
-      <div
-        className="pointer-events-none absolute -left-24 -top-16 h-[48vw] w-[48vw] rounded-full bg-[#b7c4ff] opacity-60 blur-[140px]"
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute -bottom-24 right-[-10%] h-[44vw] w-[44vw] rounded-full bg-[#fdd400] opacity-30 blur-[140px]"
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute left-[55%] top-6 h-[32vw] w-[32vw] rounded-full bg-[#93c5fd] opacity-25 blur-[140px]"
-        aria-hidden="true"
-      />
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        background: "#f8f9ff",
+        color: "#0b1c30",
+        overflow: "hidden",
+      }}
+    >
+      <div style={{
+        position: "fixed",
+        top: 0, left: 0, width: "100%", height: "100%",
+        overflow: "hidden", pointerEvents: "none", opacity: 0.3,
+        zIndex: 0,
+      }}>
+        <div style={{
+          position: "absolute", top: "-10%", left: "-10%",
+          width: "40%", height: "40%", borderRadius: "9999px",
+          background: "#2563eb", filter: "blur(120px)",
+        }} />
+        <div style={{
+          position: "absolute", top: "60%", right: "-10%",
+          width: "40%", height: "40%", borderRadius: "9999px",
+          background: "#ffc329", filter: "blur(120px)",
+        }} />
+      </div>
 
-      <main className="relative z-10 flex h-full flex-col items-center justify-center px-10 pb-12">
-        <div className="flex w-full max-w-[380px] flex-col items-center">
-          <div className="mb-10 flex items-center justify-center">
-            <Image src="/SURI.png" alt="SURI" width={140} height={140} priority />
+      <main
+        style={{
+          flex: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "16px",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        <div
+          style={{
+            width: "100%",
+            maxWidth: "440px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <div style={{
+            marginBottom: "12px",
+            transition: "opacity 0.2s ease",
+            opacity: phase === "leave" ? 0 : 1,
+          }}>
+            <Image src="/SURI.png" alt="SURI" width={80} height={80} priority />
           </div>
 
-          <section
-            className="w-full rounded-[24px] border border-white/80 bg-white/95 p-9 shadow-[0_18px_40px_rgba(0,26,84,0.12)] backdrop-blur"
-            aria-live="polite"
+          <div
+            style={{
+              width: "100%",
+              background: "rgba(255,255,255,0.85)",
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
+              border: "1px solid rgba(226,232,240,0.6)",
+              borderRadius: "24px",
+              padding: "20px 28px",
+              boxShadow: "0 20px 50px rgba(0,0,0,0.08)",
+              boxSizing: "border-box",
+              transition: "opacity 0.2s ease, transform 0.25s ease",
+              opacity: phase === "leave" ? 0 : 1,
+              transform:
+                phase === "leave"
+                  ? "translateX(-24px)"
+                  : phase === "enter"
+                  ? "translateX(24px)"
+                  : "translateX(0)",
+            }}
           >
-            <div className="flex flex-col gap-7">
-              <div>
-                <h2 className="text-[22px] font-extrabold tracking-[-0.02em] text-[#111827]">
-                  {title}
-                </h2>
-                <p className="mt-2 text-sm text-[#4f5368]">{description}</p>
+            {view === "login" ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                <div>
+                  <h2 style={{
+                    fontSize: "22px", fontWeight: 700,
+                    lineHeight: "28px", color: "#0b1c30",
+                    margin: 0,
+                  }}>
+                    Welcome back
+                  </h2>
+                  <p style={{
+                    fontSize: "14px", lineHeight: "20px",
+                    color: "#434655", marginTop: "4px", marginBottom: 0,
+                  }}>
+                    Sign in to continue your learning journey.
+                  </p>
+                </div>
+
+                <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+                  <div>
+                    <label style={{
+                      fontSize: "13px", fontWeight: 600,
+                      lineHeight: "18px", color: "#0b1c30",
+                      display: "block", marginBottom: "5px",
+                    }}>
+                      Email address
+                    </label>
+                    <div style={{ position: "relative" }}>
+                      <span
+                        className="material-symbols-outlined"
+                        style={{
+                          position: "absolute", left: "14px", top: "50%",
+                          transform: "translateY(-50%)", color: "#737686",
+                          fontSize: "18px",
+                        }}
+                      >
+                        mail
+                      </span>
+                      <input
+                        style={{
+                          width: "100%", padding: "11px 14px 11px 44px",
+                          background: "#fff", border: "1.5px solid #c3c6d7",
+                          borderRadius: "12px", fontSize: "14px",
+                          outline: "none", boxSizing: "border-box",
+                        }}
+                        className="focus:ring-2 focus:ring-[#004ac6] focus:border-transparent"
+                        placeholder="student@school.edu"
+                        type="email"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div style={{
+                      display: "flex", justifyContent: "space-between",
+                      alignItems: "center", marginBottom: "5px",
+                    }}>
+                      <label style={{
+                        fontSize: "13px", fontWeight: 600,
+                        lineHeight: "18px", color: "#0b1c30",
+                      }}>
+                        Password
+                      </label>
+                      <a
+                        href="#"
+                        style={{
+                          fontSize: "12px", fontWeight: 600,
+                          color: "#004ac6", textDecoration: "none",
+                        }}
+                        className="hover:underline"
+                      >
+                        Forgot?
+                      </a>
+                    </div>
+                    <div style={{ position: "relative" }}>
+                      <span
+                        className="material-symbols-outlined"
+                        style={{
+                          position: "absolute", left: "14px", top: "50%",
+                          transform: "translateY(-50%)", color: "#737686",
+                          fontSize: "18px",
+                        }}
+                      >
+                        lock
+                      </span>
+                      <input
+                        style={{
+                          width: "100%", padding: "11px 14px 11px 44px",
+                          background: "#fff", border: "1.5px solid #c3c6d7",
+                          borderRadius: "12px", fontSize: "14px",
+                          outline: "none", boxSizing: "border-box",
+                        }}
+                        className="focus:ring-2 focus:ring-[#004ac6] focus:border-transparent"
+                        placeholder="••••••••"
+                        type="password"
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    style={{
+                      width: "100%", padding: "13px 20px",
+                      background: "#004ac6", color: "#fff",
+                      fontWeight: 600, fontSize: "14px",
+                      border: "none", borderRadius: "12px",
+                      cursor: "pointer", display: "flex",
+                      alignItems: "center", justifyContent: "center",
+                      gap: "6px", boxShadow: "0 6px 18px rgba(0,74,198,0.2)",
+                      transition: "all 0.2s ease",
+                    }}
+                    className="hover:bg-[#2563eb] active:scale-[0.98]"
+                    type="submit"
+                  >
+                    Login
+                    <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>
+                      arrow_forward
+                    </span>
+                  </button>
+                </form>
+
+                <p style={{
+                  textAlign: "center", fontSize: "14px",
+                  color: "#434655", margin: 0,
+                }}>
+                  New here?{" "}
+                  <button
+                    style={{
+                      background: "none", border: "none",
+                      color: "#004ac6", fontWeight: 600,
+                      fontSize: "14px", cursor: "pointer",
+                      padding: 0,
+                    }}
+                    className="hover:underline"
+                    onClick={toggleView}
+                  >
+                    Create an account
+                  </button>
+                </p>
               </div>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+                <div>
+                  <h2 style={{
+                    fontSize: "22px", fontWeight: 700,
+                    lineHeight: "28px", color: "#0b1c30",
+                    margin: 0,
+                  }}>
+                    Get started
+                  </h2>
+                  <p style={{
+                    fontSize: "14px", lineHeight: "20px",
+                    color: "#434655", marginTop: "4px", marginBottom: 0,
+                  }}>
+                    Create your SURI account to start mastering math.
+                  </p>
+                </div>
 
-              <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-                {children}
-                <button
-                  className={`mt-1 inline-flex w-full items-center justify-center rounded-[12px] px-5 py-3.5 text-sm font-semibold text-white shadow-[0_10px_20px_rgba(0,71,204,0.24)] transition hover:-translate-y-0.5 ${
-                    submitHref ? "bg-[#0047cc] hover:bg-[#003bb0]" : "bg-[#16a34a] shadow-[0_10px_20px_rgba(21,128,61,0.2)] hover:bg-[#15803d]"
-                  }`}
-                  type="submit"
-                >
-                  {submitLabel}
-                </button>
-              </form>
+                <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                  <div style={{
+                    display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px",
+                  }}>
+                    <div>
+                      <label style={{
+                        fontSize: "13px", fontWeight: 600,
+                        lineHeight: "18px", color: "#0b1c30",
+                        display: "block", marginBottom: "5px",
+                      }}>
+                        First Name
+                      </label>
+                      <input
+                        style={{
+                          width: "100%", padding: "11px 14px",
+                          background: "#fff", border: "1.5px solid #c3c6d7",
+                          borderRadius: "12px", fontSize: "14px",
+                          outline: "none", boxSizing: "border-box",
+                        }}
+                        className="focus:ring-2 focus:ring-[#004ac6] focus:border-transparent"
+                        placeholder="Alex"
+                        type="text"
+                      />
+                    </div>
+                    <div>
+                      <label style={{
+                        fontSize: "13px", fontWeight: 600,
+                        lineHeight: "18px", color: "#0b1c30",
+                        display: "block", marginBottom: "5px",
+                      }}>
+                        Last Name
+                      </label>
+                      <input
+                        style={{
+                          width: "100%", padding: "11px 14px",
+                          background: "#fff", border: "1.5px solid #c3c6d7",
+                          borderRadius: "12px", fontSize: "14px",
+                          outline: "none", boxSizing: "border-box",
+                        }}
+                        className="focus:ring-2 focus:ring-[#004ac6] focus:border-transparent"
+                        placeholder="Johnson"
+                        type="text"
+                      />
+                    </div>
+                  </div>
 
-              <p className="text-center text-[13px] text-[#4f5368]">
-                {footerText}
-                <Link className="ml-1 font-semibold text-[#0047cc]" href={footerLinkHref}>
-                  {footerLinkLabel}
-                </Link>
-              </p>
-            </div>
-          </section>
+                  <div>
+                    <label style={{
+                      fontSize: "13px", fontWeight: 600,
+                      lineHeight: "18px", color: "#0b1c30",
+                      display: "block", marginBottom: "5px",
+                    }}>
+                      Email address
+                    </label>
+                    <input
+                      style={{
+                        width: "100%", padding: "11px 14px",
+                        background: "#fff", border: "1.5px solid #c3c6d7",
+                        borderRadius: "12px", fontSize: "14px",
+                        outline: "none", boxSizing: "border-box",
+                      }}
+                      className="focus:ring-2 focus:ring-[#004ac6] focus:border-transparent"
+                      placeholder="student@school.edu"
+                      type="email"
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{
+                      fontSize: "13px", fontWeight: 600,
+                      lineHeight: "18px", color: "#0b1c30",
+                      display: "block", marginBottom: "5px",
+                    }}>
+                      Password
+                    </label>
+                    <input
+                      style={{
+                        width: "100%", padding: "11px 14px",
+                        background: "#fff", border: "1.5px solid #c3c6d7",
+                        borderRadius: "12px", fontSize: "14px",
+                        outline: "none", boxSizing: "border-box",
+                      }}
+                      className="focus:ring-2 focus:ring-[#004ac6] focus:border-transparent"
+                      placeholder="Min. 8 characters"
+                      type="password"
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{
+                      fontSize: "13px", fontWeight: 600,
+                      lineHeight: "18px", color: "#0b1c30",
+                      display: "block", marginBottom: "5px",
+                    }}>
+                      Confirm Password
+                    </label>
+                    <input
+                      style={{
+                        width: "100%", padding: "11px 14px",
+                        background: "#fff", border: "1.5px solid #c3c6d7",
+                        borderRadius: "12px", fontSize: "14px",
+                        outline: "none", boxSizing: "border-box",
+                      }}
+                      className="focus:ring-2 focus:ring-[#004ac6] focus:border-transparent"
+                      placeholder="Re-enter your password"
+                      type="password"
+                    />
+                  </div>
+
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                    <input
+                      type="checkbox"
+                      style={{
+                        marginTop: "2px", width: "16px", height: "16px",
+                        borderRadius: "3px", accentColor: "#004ac6",
+                        flexShrink: 0,
+                      }}
+                    />
+                    <span style={{
+                      fontSize: "12px", color: "#434655",
+                      lineHeight: "1.4",
+                    }}>
+                      I agree to the{" "}
+                      <a href="#" style={{ color: "#004ac6", textDecoration: "none" }}
+                        className="hover:underline"
+                      >
+                        Terms of Service
+                      </a>{" "}
+                      and{" "}
+                      <a href="#" style={{ color: "#004ac6", textDecoration: "none" }}
+                        className="hover:underline"
+                      >
+                        Privacy Policy
+                      </a>.
+                    </span>
+                  </div>
+
+                  <button
+                    style={{
+                      width: "100%", padding: "13px 20px",
+                      background: "#007e37", color: "#fff",
+                      fontWeight: 600, fontSize: "14px",
+                      border: "none", borderRadius: "12px",
+                      cursor: "pointer", display: "flex",
+                      alignItems: "center", justifyContent: "center",
+                      gap: "6px", boxShadow: "0 6px 18px rgba(0,126,55,0.2)",
+                      transition: "all 0.2s ease",
+                    }}
+                    className="hover:bg-[#006229] active:scale-[0.98]"
+                    type="submit"
+                  >
+                    Create Account
+                    <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>
+                      rocket_launch
+                    </span>
+                  </button>
+                </form>
+
+                <p style={{
+                  textAlign: "center", fontSize: "14px",
+                  color: "#434655", margin: 0,
+                }}>
+                  Already have an account?{" "}
+                  <button
+                    style={{
+                      background: "none", border: "none",
+                      color: "#004ac6", fontWeight: 600,
+                      fontSize: "14px", cursor: "pointer",
+                      padding: 0,
+                    }}
+                    className="hover:underline"
+                    onClick={toggleView}
+                  >
+                    Sign in instead
+                  </button>
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       </main>
-
-      <footer className="absolute bottom-5 left-0 right-0 z-10 text-center text-[11px] text-[#8a8ea8]">
-        © 2026 SURI Adaptive Learning Platform. All rights reserved.
-      </footer>
     </div>
   );
 }
