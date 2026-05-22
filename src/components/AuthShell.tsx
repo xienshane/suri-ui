@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 type AuthShellProps = {
@@ -10,18 +10,23 @@ type AuthShellProps = {
 
 export default function AuthShell({ initialView = "login" }: AuthShellProps) {
   const [view, setView] = useState<"login" | "signup">(initialView);
-  const [phase, setPhase] = useState<"idle" | "leave" | "enter">("idle");
+  const [phase, setPhase] = useState<"idle" | "leave" | "enter">("enter");
   const [showLoginPw, setShowLoginPw] = useState(false);
   const [showSignupPw, setShowSignupPw] = useState(false);
   const [showConfirmPw, setShowConfirmPw] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const t = setTimeout(() => setPhase("idle"), 50);
+    return () => clearTimeout(t);
+  }, []);
 
   const toggleView = useCallback(() => {
     if (phase !== "idle") return;
     setPhase("leave");
     setTimeout(() => {
       router.push(view === "login" ? "/signup" : "/login");
-    }, 180);
+    }, 150);
   }, [phase, view, router]);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -80,8 +85,8 @@ export default function AuthShell({ initialView = "login" }: AuthShellProps) {
         >
           <div style={{
             marginBottom: "12px",
-            transition: "opacity 0.2s ease",
-            opacity: phase === "leave" ? 0 : 1,
+            transition: "opacity 0.25s ease",
+            opacity: phase === "idle" ? 1 : 0,
           }}>
             <Image src="/SURI.png" alt="SURI" width={80} height={80} priority />
           </div>
@@ -97,8 +102,8 @@ export default function AuthShell({ initialView = "login" }: AuthShellProps) {
               padding: "20px 28px",
               boxShadow: "0 20px 50px rgba(0,0,0,0.08)",
               boxSizing: "border-box",
-              transition: "opacity 0.2s ease, transform 0.25s ease",
-              opacity: phase === "leave" ? 0 : 1,
+              transition: "opacity 0.25s ease, transform 0.3s ease",
+              opacity: phase === "idle" ? 1 : 0,
               transform:
                 phase === "leave"
                   ? "translateX(-24px)"
@@ -426,11 +431,14 @@ export default function AuthShell({ initialView = "login" }: AuthShellProps) {
                     </div>
                   </div>
 
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                  <div style={{
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
+                    paddingTop: "8px", paddingBottom: "4px",
+                  }}>
                     <input
                       type="checkbox"
                       style={{
-                        marginTop: "2px", width: "16px", height: "16px",
+                        width: "16px", height: "16px",
                         borderRadius: "3px", accentColor: "#004ac6",
                         flexShrink: 0,
                       }}

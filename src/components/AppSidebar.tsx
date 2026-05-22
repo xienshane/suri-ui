@@ -23,27 +23,31 @@ export default function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="dashboard__sidebar">
-      <div className="dashboard__logo">
-        <img alt="SURI" src="/SURI_white.png" />
-      </div>
-      <nav className="dashboard__nav">
-        {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
-          const isActive = pathname === href;
-          return (
-            <Link
-              key={href}
-              className={`dashboard__nav-item ${isActive ? "is-active" : ""}`}
-              href={href}
-              title={label}
-              aria-current={isActive ? "page" : undefined}
-            >
-              <Icon className="icon" aria-hidden="true" />
-            </Link>
-          );
-        })}
-      </nav>
-      <div className="dashboard__sidebar-actions">
+    <div className="dashboard__sidebar-wrap">
+      <aside className="dashboard__sidebar dashboard__sidebar--logo">
+        <div className="dashboard__logo">
+          <img alt="SURI" src="/SURI_white.png" />
+        </div>
+      </aside>
+      <aside className="dashboard__sidebar dashboard__sidebar--nav">
+        <nav className="dashboard__nav">
+          {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+            const isActive = pathname === href;
+            return (
+              <Link
+                key={href}
+                className={`dashboard__nav-item ${isActive ? "is-active" : ""}`}
+                href={href}
+                title={label}
+                aria-current={isActive ? "page" : undefined}
+              >
+                <Icon className="icon" aria-hidden="true" />
+              </Link>
+            );
+          })}
+        </nav>
+      </aside>
+      <aside className="dashboard__sidebar dashboard__sidebar--settings">
         <Link
           className={`dashboard__icon-button ${pathname === "/settings" ? "is-active" : ""}`}
           href="/settings"
@@ -52,7 +56,7 @@ export default function AppSidebar() {
         >
           <Settings className="icon" aria-hidden="true" />
         </Link>
-      </div>
-    </aside>
+      </aside>
+    </div>
   );
 }

@@ -67,28 +67,52 @@ body {
 }
 
 .dashboard {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
-  gap: 24px;
+  gap: 20px;
   padding: 16px;
   background: radial-gradient(circle at top, #ffffff 0%, #f5f7ff 35%, #e4edff 55%, #9dc8ff 90%);
 }
 
 .dashboard__sidebar {
-  width: 80px;
+  width: 60px;
   background: var(--primary);
   border-radius: 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px 0;
-  gap: 20px;
+  padding: 20px 0;
+  gap: 16px;
   box-shadow: 0 10px 28px rgba(0, 26, 84, 0.25);
 }
 
+.dashboard__sidebar--settings {
+  padding: 14px 0;
+  gap: 0;
+}
+
+.dashboard__sidebar--logo {
+  padding: 16px 0;
+  gap: 0;
+}
+
+.dashboard__sidebar--nav {
+  flex: 1;
+  justify-content: center;
+  padding: 12px 0;
+  gap: 0;
+}
+
+.dashboard__sidebar-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+}
+
 .dashboard__logo {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 0;
   display: flex;
   align-items: center;
@@ -99,8 +123,8 @@ body {
 }
 
 .dashboard__logo img {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
   display: block;
 }
@@ -108,14 +132,14 @@ body {
 .dashboard__nav {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  flex: 1;
+  gap: 25px;
+  align-items: center;
 }
 
 .dashboard__nav-item {
-  width: 48px;
-  height: 48px;
-  border-radius: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
   border: none;
   background: transparent;
   color: #fff;
@@ -138,8 +162,7 @@ body {
 .dashboard__sidebar-actions {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-top: auto;
+  gap: 14px;
   align-items: center;
 }
 
@@ -688,7 +711,7 @@ body {
 }
 
 .settings-view__card {
-  background: var(--surface-strong);
+  background: #eef3ff;
   border-radius: 18px;
   border: 1px solid rgba(195, 197, 217, 0.35);
   padding: 20px 22px;
@@ -696,7 +719,6 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  box-shadow: var(--shadow-sm);
 }
 
 .settings-view__card h3 {
@@ -712,19 +734,62 @@ body {
 
 .settings-view__card button {
   border: none;
-  background: var(--surface-high);
-  color: var(--text);
+  background: #001a54;
+  color: #fff;
   padding: 10px 16px;
   border-radius: 12px;
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: background 0.2s ease;
 }
 
 .settings-view__card button:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
+  background: #fdd400;
+  color: #221b00;
+}
+
+.settings-view__logout {
+  width: 100%;
+  padding: 14px 20px;
+  border: 1.5px solid #e11d48;
+  border-radius: 14px;
+  background: transparent;
+  color: #e11d48;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.2s ease, color 0.2s ease;
+  margin-top: 8px;
+}
+
+.settings-view__logout:hover {
+  background: #e11d48;
+  color: #fff;
+}
+
+.toggle-slider::before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 2px;
+  bottom: 2px;
+  background: #fff;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+input:checked + .toggle-slider {
+  background: #001a54;
+}
+
+input:checked + .toggle-slider::before {
+  transform: translateX(18px);
 }
 
 .dashboard__main {
@@ -758,18 +823,33 @@ body {
   .dashboard__sidebar {
     width: 100%;
     flex-direction: row;
-    justify-content: space-between;
     padding: 16px 20px;
+  }
+
+  .dashboard__sidebar--logo {
+    padding: 12px 20px;
+    justify-content: center;
+  }
+
+  .dashboard__sidebar--nav {
+    flex: 1;
+    justify-content: center;
+    padding: 12px 20px;
+  }
+
+  .dashboard__sidebar--settings {
+    padding: 10px 20px;
+    justify-content: center;
+  }
+
+  .dashboard__sidebar-wrap {
+    flex-direction: row;
+    gap: 12px;
   }
 
   .dashboard__nav {
     flex-direction: row;
     gap: 12px;
-  }
-
-  .dashboard__sidebar-actions {
-    flex-direction: row;
-    margin: 0;
   }
 
   .dashboard__welcome {
