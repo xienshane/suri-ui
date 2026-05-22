@@ -71,7 +71,7 @@ body {
   display: flex;
   gap: 24px;
   padding: 16px;
-  background: radial-gradient(circle at top, #ffffff 0%, #f5f7ff 35%, #e4edff 55%, #ffe89f 90%);
+  background: radial-gradient(circle at top, #ffffff 0%, #f5f7ff 35%, #e4edff 55%, #9dc8ff 90%);
 }
 
 .dashboard__sidebar {
