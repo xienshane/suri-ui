@@ -11,17 +11,18 @@ type AuthShellProps = {
 export default function AuthShell({ initialView = "login" }: AuthShellProps) {
   const [view, setView] = useState<"login" | "signup">(initialView);
   const [phase, setPhase] = useState<"idle" | "leave" | "enter">("idle");
+  const [showLoginPw, setShowLoginPw] = useState(false);
+  const [showSignupPw, setShowSignupPw] = useState(false);
+  const [showConfirmPw, setShowConfirmPw] = useState(false);
   const router = useRouter();
 
   const toggleView = useCallback(() => {
     if (phase !== "idle") return;
     setPhase("leave");
     setTimeout(() => {
-      setView((v) => (v === "login" ? "signup" : "login"));
-      setPhase("enter");
-      setTimeout(() => setPhase("idle"), 250);
+      router.push(view === "login" ? "/signup" : "/login");
     }, 180);
-  }, [phase, view]);
+  }, [phase, view, router]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -187,21 +188,38 @@ export default function AuthShell({ initialView = "login" }: AuthShellProps) {
                           position: "absolute", left: "14px", top: "50%",
                           transform: "translateY(-50%)", color: "#737686",
                           fontSize: "18px",
+                          pointerEvents: "none",
                         }}
                       >
                         lock
                       </span>
                       <input
                         style={{
-                          width: "100%", padding: "11px 14px 11px 44px",
+                          width: "100%", padding: "11px 44px 11px 44px",
                           background: "#fff", border: "1.5px solid #c3c6d7",
                           borderRadius: "12px", fontSize: "14px",
                           outline: "none", boxSizing: "border-box",
                         }}
                         className="focus:ring-2 focus:ring-[#004ac6] focus:border-transparent"
                         placeholder="••••••••"
-                        type="password"
+                        type={showLoginPw ? "text" : "password"}
                       />
+                      <button
+                        type="button"
+                        onClick={() => setShowLoginPw((v) => !v)}
+                        style={{
+                          position: "absolute", right: "10px", top: "50%",
+                          transform: "translateY(-50%)",
+                          background: "none", border: "none",
+                          cursor: "pointer", padding: "4px",
+                          display: "flex", alignItems: "center",
+                          color: "#737686",
+                        }}
+                      >
+                        <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>
+                          {showLoginPw ? "visibility_off" : "visibility"}
+                        </span>
+                      </button>
                     </div>
                   </div>
 
@@ -338,17 +356,35 @@ export default function AuthShell({ initialView = "login" }: AuthShellProps) {
                     }}>
                       Password
                     </label>
-                    <input
-                      style={{
-                        width: "100%", padding: "11px 14px",
-                        background: "#fff", border: "1.5px solid #c3c6d7",
-                        borderRadius: "12px", fontSize: "14px",
-                        outline: "none", boxSizing: "border-box",
-                      }}
-                      className="focus:ring-2 focus:ring-[#004ac6] focus:border-transparent"
-                      placeholder="Min. 8 characters"
-                      type="password"
-                    />
+                    <div style={{ position: "relative" }}>
+                      <input
+                        style={{
+                          width: "100%", padding: "11px 44px 11px 14px",
+                          background: "#fff", border: "1.5px solid #c3c6d7",
+                          borderRadius: "12px", fontSize: "14px",
+                          outline: "none", boxSizing: "border-box",
+                        }}
+                        className="focus:ring-2 focus:ring-[#004ac6] focus:border-transparent"
+                        placeholder="Min. 8 characters"
+                        type={showSignupPw ? "text" : "password"}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowSignupPw((v) => !v)}
+                        style={{
+                          position: "absolute", right: "10px", top: "50%",
+                          transform: "translateY(-50%)",
+                          background: "none", border: "none",
+                          cursor: "pointer", padding: "4px",
+                          display: "flex", alignItems: "center",
+                          color: "#737686",
+                        }}
+                      >
+                        <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>
+                          {showSignupPw ? "visibility_off" : "visibility"}
+                        </span>
+                      </button>
+                    </div>
                   </div>
 
                   <div>
@@ -359,17 +395,35 @@ export default function AuthShell({ initialView = "login" }: AuthShellProps) {
                     }}>
                       Confirm Password
                     </label>
-                    <input
-                      style={{
-                        width: "100%", padding: "11px 14px",
-                        background: "#fff", border: "1.5px solid #c3c6d7",
-                        borderRadius: "12px", fontSize: "14px",
-                        outline: "none", boxSizing: "border-box",
-                      }}
-                      className="focus:ring-2 focus:ring-[#004ac6] focus:border-transparent"
-                      placeholder="Re-enter your password"
-                      type="password"
-                    />
+                    <div style={{ position: "relative" }}>
+                      <input
+                        style={{
+                          width: "100%", padding: "11px 44px 11px 14px",
+                          background: "#fff", border: "1.5px solid #c3c6d7",
+                          borderRadius: "12px", fontSize: "14px",
+                          outline: "none", boxSizing: "border-box",
+                        }}
+                        className="focus:ring-2 focus:ring-[#004ac6] focus:border-transparent"
+                        placeholder="Re-enter your password"
+                        type={showConfirmPw ? "text" : "password"}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmPw((v) => !v)}
+                        style={{
+                          position: "absolute", right: "10px", top: "50%",
+                          transform: "translateY(-50%)",
+                          background: "none", border: "none",
+                          cursor: "pointer", padding: "4px",
+                          display: "flex", alignItems: "center",
+                          color: "#737686",
+                        }}
+                      >
+                        <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>
+                          {showConfirmPw ? "visibility_off" : "visibility"}
+                        </span>
+                      </button>
+                    </div>
                   </div>
 
                   <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
