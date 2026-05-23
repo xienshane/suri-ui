@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { spawn } from "child_process";
-import path from "path";
 
 export async function POST(req: NextRequest) {
   const { expression } = await req.json();
@@ -9,32 +7,28 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "No expression provided" }, { status: 400 });
   }
 
-  // mathsteps-runner is inside /app, so path is app/mathsteps-runner/runner.js
-  const runnerPath = path.join(process.cwd(), "src", "app", "mathsteps-runner", "runner.js");
+  try {
+    // Dynamically import so it only loads server-side
+    const mathsteps = require("mathsteps");
 
-  return new Promise<NextResponse>((resolve) => {
-    const child = spawn("node", [runnerPath, expression]);
+    const rawSteps = mathsteps.simplifyExpression(expression);
 
-    let stdout = "";
-    let stderr = "";
+    if (!rawSteps || rawSteps.length === 0) {
+      return NextResponse.json({ expression, steps: [] });
+    }
 
-    child.stdout.on("data", (data: Buffer) => { stdout += data.toString(); });
-    child.stderr.on("data", (data: Buffer) => { stderr += data.toString(); });
+    const steps = rawSteps.map((step: any, index: number) => ({
+      step:       index + 1,
+      changeType: step.changeType,
+      oldNode:    step.oldNode ? step.oldNode.toString() : null,
+      newNode:    step.newNode ? step.newNode.toString() : null,
+    }));
 
-    child.on("close", (code: number) => {
-      if (code !== 0) {
-        try {
-          resolve(NextResponse.json({ error: JSON.parse(stderr).error ?? "Runner failed" }, { status: 500 }));
-        } catch {
-          resolve(NextResponse.json({ error: stderr || "Runner failed" }, { status: 500 }));
-        }
-        return;
-      }
-      try {
-        resolve(NextResponse.json(JSON.parse(stdout)));
-      } catch {
-        resolve(NextResponse.json({ error: "Failed to parse runner output" }, { status: 500 }));
-      }
-    });
-  });
+    return NextResponse.json({ expression, steps });
+  } catch (err: any) {
+    return NextResponse.json(
+      { error: err?.message ?? "Failed to solve expression" },
+      { status: 500 }
+    );
+  }
 }
